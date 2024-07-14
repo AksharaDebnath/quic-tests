@@ -1,35 +1,61 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+# database.py
+from sqlalchemy import create_engine, MetaData
 
-DATABASE_URL = "postgresql://postgres:yourpassword@localhost/mydatabase"
+DATABASE_URL = "postgresql+asyncpg://username:password@localhost/dbname"
 
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+metadata = MetaData()
+
+
+
+
+# models.py
+from sqlalchemy import Table, Column, Integer, String
+from .database import metadata
+
+benchmarking = Table(
+    'benchmarking',
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column('clnt_no', Integer),
+    Column('data', String)  # Adjust the column names and types according to your table schema
+)
+
+
+
+
+# main.py
+from fastapi import FastAPI, HTTPException
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+from .database import DATABASE_URL, metadata, engine
+from .models import benchmarking
 
 app = FastAPI()
 
-class Item(Base):
-    __tablename__ = "items"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    description = Column(String, index=True)
+# Create async engine and session
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+async_session = sessionmaker(
+    async_engine, expire_on_commit=False, class_=AsyncSession
+)
 
-Base.metadata.create_all(bind=engine)
+# Create tables
+@app.on_event("startup")
+async def on_startup():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(metadata.create_all)
 
-class ItemCreate(BaseModel):
-    name: str
-    description: str
+@app.on_event("shutdown")
+async def on_shutdown():
+    await async_engine.dispose()
 
-@app.post("/items/")
-def create_item(item: ItemCreate):
-    db = SessionLocal()
-    db_item = Item(name=item.name, description=item.description)
-    db.add(db_item)
-    db.commit()
-    db.refresh(db_item)
-    db.close()
-    return db_item
+@app.get("/client/{client_id}")
+async def get_client_data(client_id: int):
+    async with async_session() as session:
+        query = select(benchmarking).where(benchmarking.c.clnt_no == client_id)
+        result = await session.execute(query)
+        client_data = result.fetchall()
+        if not client_data:
+            raise HTTPException(status_code=404, detail="Client ID not found")
+        return client_data
