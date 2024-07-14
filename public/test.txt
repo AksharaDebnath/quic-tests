@@ -1,68 +1,59 @@
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 DATABASE_URL = "postgresql://username:password@localhost/dbname"
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
-class Benchmarking(Base):
-    __tablename__ = "benchmarking"
-
-    id = Column(Integer, primary_key=True, index=True)
-    client_id = Column(String, index=True)
-    client_name = Column(String)
-    client_data = Column(String)
-
-Base.metadata.create_all(bind=engine)
+def get_db_connection():
+    conn = psycopg2.connect(DATABASE_URL)
+    return conn
 
 
 
 
 
 
-
-
-
-
-
-
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
-from database import SessionLocal, Benchmarking
+from database import get_db_connection
 
 app = FastAPI()
-
-# Dependency to get the database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # Define the client ID to be used
 CLIENT_ID = "your_client_id"  # Set your client ID here
 
 @app.get("/", response_class=HTMLResponse)
-async def read_home(db: Session = Depends(get_db)):
-    client = db.query(Benchmarking).filter(Benchmarking.client_id == CLIENT_ID).first()
+async def read_home():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute("SELECT client_id, client_name, client_data FROM benchmarking WHERE client_id = %s", (CLIENT_ID,))
+    client = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
     if client is None:
         return "<h1>Client not found</h1>"
     
     return f"""
     <h1>Client Information</h1>
-    <p>Client ID: {client.client_id}</p>
-    <p>Client Name: {client.client_name}</p>
-    <p>Client Data: {client.client_data}</p>
+    <p>Client ID: {client['client_id']}</p>
+    <p>Client Name: {client['client_name']}</p>
+    <p>Client Data: {client['client_data']}</p>
     """
 
 @app.post("/clients/")
-def create_client(client: Benchmarking, db: Session = Depends(get_db)):
-    db.add(client)
-    db.commit()
-    db.refresh(client)
+async def create_client(client: dict):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO benchmarking (client_id, client_name, client_data) VALUES (%s, %s, %s)",
+        (client['client_id'], client['client_name'], client['client_data'])
+    )
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
     return client
