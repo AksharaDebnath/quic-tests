@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from '../component/Sidebar';
-import Shapes from '../component/Shapes';
+import Button from '../component/Button';
 import styled from 'styled-components';
 import './gome.css';
  
@@ -22,32 +22,37 @@ const HomePage = () => {
     setSelectedShapes(selectedOptions);
   };
 
+  const [selectedButtons, setSelectedButtons] = useState([]);
+
+  const handleButtonClick = (label) => {
+    setSelectedButtons(prevSelectedButtons => {
+      if (prevSelectedButtons.includes(label)) {
+        return prevSelectedButtons.filter(item => item !== label);
+      } else {
+        return [...prevSelectedButtons, label];
+      }
+    });
+  };
+
   return (
     <HomePageContainer>
       <Sidebar onCheckboxChange={handleCheckboxChange} />
       <Content>
-      <div className="container">
-      <div className="box map-box">
-        <h2>Map</h2>
-      </div>
-      <div className="box form-box">
-        <h2>Form</h2>
-        <form>
-          <div>
-            <label>Name:</label>
-            <input type="text" name="name" />
-          </div>
-          <div>
-            <label>Address:</label>
-            <input type="text" name="address" />
-          </div>
-          {/* Add more fields as needed */}
-        </form>
-      </div>
-      <div className="box image-box">
-0        <img src="https://via.placeholder.com/150" alt="Placeholder" />
-      </div>
-    </div>
+      <h1>Select Buttons</h1>
+        <div>
+          {['a', 'b', 'c'].map(label => (
+            <Button 
+              key={label} 
+              label={label} 
+              onClick={handleButtonClick} 
+              isSelected={selectedButtons.includes(label)} 
+            />
+          ))}
+        </div>
+        <div>
+          <h2>Selected Buttons</h2>
+          <p>{selectedButtons.join(', ')}</p>
+        </div>
       </Content>
     </HomePageContainer>
   );
