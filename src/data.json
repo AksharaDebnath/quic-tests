@@ -1,0 +1,30 @@
+{
+    "coverageRatio": {
+      "firstRowTable": {
+        "headers": ["Person 1", "Person 2"],
+        "data": [
+          ["Emil", "Tobias"],
+          ["16", "14"]
+        ]
+      },
+      "secondRowTable": {
+        "data": ["1", "2", "3", "4"]
+      },
+      "chartData": {
+        "data1": [
+          { "x": 3, "y": 4 },
+          { "x": 6, "y": 8 },
+          { "x": 12, "y": 16 },
+          { "x": 15, "y": 32 }
+        ],
+        "data2": [
+          { "x": 4, "y": 3 },
+          { "x": 8, "y": 6 },
+          { "x": 16, "y": 12 },
+          { "x": 32, "y": 15 }
+        ]
+      }
+    },
+    "industry": "manufacturing"
+  }
+  

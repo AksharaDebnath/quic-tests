@@ -1,0 +1,175 @@
+/* Checkbox Column */
+.header {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 800;
+    padding: 10px 10px;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    color: rgb(0, 0, 0);
+    border-radius: 0.5em;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.form {
+    padding: 0.7em;
+}
+
+.checklist-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.column {
+    width: 100%;
+    padding: 0.8em;
+    border-radius: 1.5em;
+}
+
+.column1 {
+    background-color: #ffffff; /* Light blue */
+    color: rgb(0, 0, 0);
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    padding-left: 1.5em;
+}
+
+.header-peer {
+    font-size: 1em;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 800;
+    padding: 0.2em 0 0.5em 0em;
+}
+
+.checkbox-label {
+    display: block;
+    font-size: 0.9em;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.checkbox-label input {
+    margin-right: 10px;
+    transform: scale(1.2);
+    background-color: transparent;
+}
+
+button {
+    margin-top: 0.2em;
+    padding: 10px 20px;
+    background-color: #0a1e59;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 800;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+}
+
+button:hover {
+    background-color: #50508f;
+    color: rgb(255, 255, 255);
+}
+
+/* Graph Column One */
+.square {
+    margin: auto;
+    position: relative;
+    padding: 0.7em;
+  }
+
+.header-square {
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    color: rgb(0, 0, 0);
+    border-radius: 1em;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.First-row {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    border: 0.1em solid black;
+    padding: 5px;
+    border-radius: 1em;
+    margin-bottom: 10px;
+}
+
+.FirstRow-square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.First-row-header {
+    background-color: #222258;
+    padding: 0.2em;
+    color: white;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 0.5em;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    border-radius: 1em;
+    font-size: 0.9em;
+}
+
+.FirstColumn-table {
+    color: rgb(0, 0, 0);
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+}
+
+.FirstColumn-table-style {
+    width: 100%;
+    text-align: center;
+    border-right: solid 0.2em black;
+}
+
+.SecondColumn-table {
+    color: rgb(108, 104, 104);
+    width: 30%;
+    font-weight: 800;
+    font-size: 1.5em;
+}
+
+.Second-row {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    border: 0.1em solid black;
+    padding: 5px;
+    border-radius: 1em;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.Second-row-th {
+    padding-left: 1.5em;
+    text-align: left;
+    width: 30%;
+}
+
+.SecondRow-table {
+    color: rgb(0, 0, 0);
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+.Third-row {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    border-radius: 1em;
+    width: 100%;
+    height: 50%;
+}
