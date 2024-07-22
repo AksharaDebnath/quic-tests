@@ -11,10 +11,16 @@
     width: 30%;
     background-color: #ffffff;
     box-shadow: 3px 3px 10px rgb(172, 169, 169);
-    padding: 1em;
+    padding: 1.2em;
     margin-left: 15px;
     border-radius: 1em;
     height: 25em;
+  }
+
+  .form-overflow {
+    overflow-y: scroll;
+    background-color: #ffffff;
+    height: 100%;
   }
 
   .form-group {
@@ -33,6 +39,7 @@
   }
   
   .right-label {
+    margin-right: 10px;
     padding: 0.4em 2em 0.4em 2em;
     border-radius: 1.5em;
     color: rgb(0, 0, 0);
@@ -46,19 +53,34 @@
     align-self: center;
 }
 
+.overview {
+  width: 70%;
+}
+
   .form-container-overview {
-    width: 70%;
     background-color: #ffffff;
     box-shadow: 3px 3px 10px rgb(172, 169, 169);
-    padding: 1em;
+    padding: 0em 0em 0.5em 2em;
     border-radius: 1em;
     margin-left: 16px;
-    font-size: 0.8em;
   }
 
+  .header-overview {
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 3px 3px 10px rgb(172, 169, 169);
+    color: rgb(0, 0, 0);
+    border-radius: 1em;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background-color: white;
+    width: 97%;
+    margin-left: 16px;
+    font-size: 1.2em;
+  }
 
   .flags {
-    width: 22%;
+    width: 24%;
     background-color: #0a1e59;
     color: white;
     box-shadow: 3px 3px 10px rgb(172, 169, 169);
@@ -84,14 +106,14 @@
     padding: 10px 20px;
   }
 
-  .header-overview {
+  .header-overview-borr {
     font-size: 1.2em;
     font-family: 'Times New Roman', Times, serif;
     font-weight: 600;
   }
 
   .overview-label {
-    padding: 0.4em 2em 0.4em 2em;
+    padding: 0.4em 2em 0.2em 2em;
     border-radius: 0.8em;
     color: rgb(0, 0, 0);
     background-color: white;

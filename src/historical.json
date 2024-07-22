@@ -1,0 +1,72 @@
+[
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00001",
+        "Date": "2023-01-15",
+        "Amount": 1500,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00002",
+        "Date": "2023-02-10",
+        "Amount": 500,
+        "Type": "CPE"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction ": "TXN00003",
+        "Date": "2023-02-20",
+        "Amount": 2000,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00004",
+        "Date": "2023-03-05",
+        "Amount": 1200,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00005",
+        "Date": "2023-03-18",
+        "Amount": 3000,
+        "Type": "CPE"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00006",
+        "Date": "2023-04-01",
+        "Amount": 2500,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00007",
+        "Date": "2023-04-15",
+        "Amount": 1000,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00008",
+        "Date": "2023-04-28",
+        "Amount": 5000,
+        "Type": "CPE"
+    },
+    {    
+        "clnt_no": "117413559",
+        "Transaction": "TXN00009",
+        "Date": "2023-05-05",
+        "Amount": 1500,
+        "Type": "APP/REQ"
+    },
+    {
+        "clnt_no": "117413559",
+        "Transaction": "TXN00010",
+        "Date": "2023-05-15",
+        "Amount": 1800,
+        "Type": "APP/REQ"
+    }
+]

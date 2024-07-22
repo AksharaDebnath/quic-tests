@@ -1,9 +1,9 @@
 /* App.css */
-.container {
+/* .container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
+  } */
   
   /* .box {
     flex: 1;
@@ -14,14 +14,14 @@
     border: none;
   } */
   
-  .map-box, .form-box, .image-box {
+  /* .map-box, .form-box, .image-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+  } */
   
-  label {
+  /* label {
     background-color: #f0f0f0;
     padding: 5px;
     margin-right: 10px;
@@ -37,13 +37,13 @@
   input:focus {
     outline: none;
     border-color: #007BFF;
-  }
+  } */
 /*   
   form > div {
     margin-bottom: 15px;
   } */
   
-  .map-placeholder {
+  /* .map-placeholder {
     width: 100%;
     height: 200px;
     background-color: #f0f0f0;
@@ -51,11 +51,11 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #ccc;
-  }
+  } */
   
-  .space {
+  /* .space {
     height: 10em;
-  }
+  } */
 
   .benchmarking {
     display: flex;
