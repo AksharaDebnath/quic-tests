@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { VictoryChart, VictoryScatter, VictoryTooltip, VictoryAxis, VictoryTheme } from 'victory';
 import './client.css';
+import ews from './ews.png'
 
 import client from '../client.json';
 import historical from '../historical.json';
@@ -33,27 +34,11 @@ const Overview = () => {
     { date: '2024-11-01', BRR: 66, CCRI: 4 },
   ];
 
-  // const sampleData = [
-  //   {brrDueDate: '2024-07-01', brrStatus: 'Pending', ccriStatus: 'Green', ccriLastUpdated: '2024-03-01' },
-  // ];
-
   const formattedData = data.map((d) => ({
     x: new Date(d.date),
     y: d.amount,
     label: `${d.transaction}: $${d.amount}`
   }));
-
-  // const [sampleDatas, setData] = useState(sampleData);
-
-  // const isBRROverdue = (brrDueDate, brrStatus) => {
-  //   const today = new Date();
-  //   const dueDate = new Date(brrDueDate);
-  //   return brrStatus === 'Pending' && dueDate < today;
-  // };
-
-  // const isHighRiskCCRI = (ccriStatus) => {
-  //   return ccriStatus === 'Red';
-  // };
 
   const brrThreshold = 80;
 
@@ -149,8 +134,9 @@ const Overview = () => {
             <h3 className='header-overview-borr'>Borrower Overview</h3>
             <div className='overview-label'>{client.Borr_Overview}</div>
         </div>
-        <div className='flags ews'>
+        <div className='flags-ews ews'>
           <h3 className='header-overview-borr ews'>EWS System</h3>
+          <img className='ews image' src={ews} alt="Description of the image" />
         </div> 
       </div>
     </div>
