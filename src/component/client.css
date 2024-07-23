@@ -60,9 +60,10 @@
   .form-container-overview {
     background-color: #ffffff;
     box-shadow: 3px 3px 10px rgb(172, 169, 169);
-    padding: 0em 0em 0.5em 2em;
+    padding: 0em 0em 0em 2em;
     border-radius: 1em;
     margin-left: 16px;
+    height: 8em;
   }
 
   .header-overview {
@@ -86,6 +87,7 @@
     box-shadow: 3px 3px 10px rgb(172, 169, 169);
     border-radius: 1em;
     margin-left: 16px;
+    padding: 0.2em 1em 0.2em 1em;
   }
 
   .form-group-overview {
@@ -104,6 +106,7 @@
     margin-top: 10px;
     border-radius: 1em;
     padding: 10px 20px;
+    height: 14em;
   }
 
   .header-overview-borr {
@@ -113,10 +116,47 @@
   }
 
   .overview-label {
-    padding: 0.4em 2em 0.2em 2em;
+    padding: 0.5em 1em 0.5em 1em;
     border-radius: 0.8em;
     color: rgb(0, 0, 0);
     background-color: white;
     font-family: 'Times New Roman', Times, serif;
-    border: 0.1em solid black;
+    border: 0.1em solid #000000;
   }
+
+  .flags-header {
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(255, 255, 255);
+    text-align: right;
+    font-weight: 300;
+    font-size: 2.5em;
+  }
+
+  .flags-header-date {
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(255, 255, 255);
+    text-align: right;
+    font-weight: 300;
+    font-size: 1.2em;
+  }
+
+  .flags-table {
+    display: flex;
+    align-items: center;
+  }
+
+  .circle {
+    background-color: green;
+    border-radius: 2em;
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: 5px;
+    border: solid rgb(255, 255, 255) 0.2em;
+    margin-right: 5px;
+  }
+
+  .circle.red {
+    background-color: rgb(200, 26, 26);
+  }
+
+  

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { VictoryChart, VictoryScatter, VictoryTooltip, VictoryAxis, VictoryTheme } from 'victory';
 import './client.css';
 
@@ -19,11 +19,33 @@ const Overview = () => {
     { date: historical[9].Date, transaction: historical[9].Type, amount: historical[9].Amount },
   ];
 
+  const sampleData = [
+    {brrDueDate: '2024-07-01', brrStatus: 'Pending', ccriStatus: 'Green', ccriLastUpdated: '2024-03-01' },
+  ];
+
   const formattedData = data.map((d) => ({
     x: new Date(d.date),
     y: d.amount,
     label: `${d.transaction}: $${d.amount}`
   }));
+
+  const [sampleDatas, setData] = useState(sampleData);
+
+  const isBRROverdue = (brrDueDate, brrStatus) => {
+    const today = new Date();
+    const dueDate = new Date(brrDueDate);
+    return brrStatus === 'Pending' && dueDate < today;
+  };
+
+  const isHighRiskCCRI = (ccriStatus) => {
+    return ccriStatus === 'Red';
+  };
+
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
 
   return (
     <div className="box">
@@ -34,8 +56,8 @@ const Overview = () => {
           <VictoryChart
             theme={VictoryTheme.material}
             scale={{ x: "time" }}
-            height={230}
-            width={450} 
+            height={160}
+            width={600} 
           >
             <VictoryAxis
               tickFormat={(t) => {
@@ -60,8 +82,31 @@ const Overview = () => {
             </div>
         </div> 
         <div className='flags'>
-            fgfhgfhf
-        </div>     
+          <h1 className='flags-header'>{client.TSNE_Band}</h1>
+          <h3 className='flags-header-date'>{'('+ formattedDate +')'} </h3>
+            <div className='flags-table'>
+              {sampleDatas.map((data, index) => {
+                const overdue = isBRROverdue(data.brrDueDate, data.brrStatus);
+                return (
+                  <div className='flags-table' key={index}>
+                    <div className={`circle ${overdue ? 'red glow' : ''}`}></div>
+                    <h3>{overdue ? 'BRR Overdue' : data.brrStatus}</h3>
+                  </div>
+                );
+              })}
+            </div>
+            <div className='flags-table'>
+                {sampleDatas.map((data, index) => {
+                    const overdue = isBRROverdue(data.brrDueDate, data.brrStatus);
+                    return (
+                      <div className='flags-table' key={index}>
+                        <div className={`circle ${data.ccriStatus === 'Red' ? 'red' : 'green'}`}></div>
+                        <h3>{data.ccriStatus === 'Red' ? 'CCRI Red' : 'CCRI Status'}</h3>
+                      </div>
+                    );
+                  })}
+            </div>
+        </div> 
       </div>
       <div className="borr-overview" >
           <h3 className='header-overview-borr'>Borrower Overview</h3>
