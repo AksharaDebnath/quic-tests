@@ -19,9 +19,23 @@ const Overview = () => {
     { date: historical[9].Date, transaction: historical[9].Type, amount: historical[9].Amount },
   ];
 
-  const sampleData = [
-    {brrDueDate: '2024-07-01', brrStatus: 'Pending', ccriStatus: 'Green', ccriLastUpdated: '2024-03-01' },
+  const sampleDatas = [
+    { date: '2024-01-01', BRR: 65, CCRI: 2 },
+    { date: '2024-02-01', BRR: 70, CCRI: 3 },
+    { date: '2024-03-01', BRR: 75, CCRI: 4 },
+    { date: '2024-04-01', BRR: 80, CCRI: 4 },
+    { date: '2024-05-01', BRR: 85, CCRI: 4 },
+    { date: '2024-06-01', BRR: 60, CCRI: 1 },
+    { date: '2024-07-01', BRR: 65, CCRI: 2 },
+    { date: '2024-08-01', BRR: 70, CCRI: 3 },
+    { date: '2024-09-01', BRR: 68, CCRI: 4 },
+    { date: '2024-10-01', BRR: 67, CCRI: 4 },
+    { date: '2024-11-01', BRR: 66, CCRI: 4 },
   ];
+
+  // const sampleData = [
+  //   {brrDueDate: '2024-07-01', brrStatus: 'Pending', ccriStatus: 'Green', ccriLastUpdated: '2024-03-01' },
+  // ];
 
   const formattedData = data.map((d) => ({
     x: new Date(d.date),
@@ -29,18 +43,54 @@ const Overview = () => {
     label: `${d.transaction}: $${d.amount}`
   }));
 
-  const [sampleDatas, setData] = useState(sampleData);
+  // const [sampleDatas, setData] = useState(sampleData);
 
-  const isBRROverdue = (brrDueDate, brrStatus) => {
-    const today = new Date();
-    const dueDate = new Date(brrDueDate);
-    return brrStatus === 'Pending' && dueDate < today;
+  // const isBRROverdue = (brrDueDate, brrStatus) => {
+  //   const today = new Date();
+  //   const dueDate = new Date(brrDueDate);
+  //   return brrStatus === 'Pending' && dueDate < today;
+  // };
+
+  // const isHighRiskCCRI = (ccriStatus) => {
+  //   return ccriStatus === 'Red';
+  // };
+
+  const brrThreshold = 80;
+
+  const isBRROverdue = (brr) => {
+      return brr > brrThreshold;
   };
 
-  const isHighRiskCCRI = (ccriStatus) => {
-    return ccriStatus === 'Red';
+  const isCCRIRed4Months = (data) => {
+      let consecutiveRedMonths = 0;
+      return data.some(item => {
+          if (item.CCRI === 4) {
+              consecutiveRedMonths += 1;
+          } else {
+              consecutiveRedMonths = 0;
+          }
+          return consecutiveRedMonths >= 4;
+      });
   };
 
+  const getBRROverdueStatus = () => {
+      return sampleDatas.map(data => ({
+          date: data.date,
+          BRR_Overdue: isBRROverdue(data.BRR),
+      }));
+  };
+
+  const getPrediction = () => {
+      const brrStatus = sampleDatas.some(data => isBRROverdue(data.BRR));
+      const ccriStatus = isCCRIRed4Months(sampleDatas);
+
+      return {
+          BRR_Overdue: brrStatus,
+          CCRI_Red_4_Months: ccriStatus,
+      };
+  };
+
+  const prediction = getPrediction();
   const today = new Date();
   const day = today.getDate();
   const month = today.getMonth() + 1;
@@ -85,32 +135,23 @@ const Overview = () => {
           <h1 className='flags-header'>{client.TSNE_Band}</h1>
           <h3 className='flags-header-date'>{'('+ formattedDate +')'} </h3>
             <div className='flags-table'>
-              {sampleDatas.map((data, index) => {
-                const overdue = isBRROverdue(data.brrDueDate, data.brrStatus);
-                return (
-                  <div className='flags-table' key={index}>
-                    <div className={`circle ${overdue ? 'red glow' : ''}`}></div>
-                    <h3>{overdue ? 'BRR Overdue' : data.brrStatus}</h3>
-                  </div>
-                );
-              })}
+                <div className={`circle ${prediction.BRR_Overdue ? 'red' : ''}`}></div>
+                <h3>{prediction.BRR_Overdue ? 'BRR Overdue' : `BRR Status: OK`}</h3>
             </div>
-            <div className='flags-table'>
-                {sampleDatas.map((data, index) => {
-                    const overdue = isBRROverdue(data.brrDueDate, data.brrStatus);
-                    return (
-                      <div className='flags-table' key={index}>
-                        <div className={`circle ${data.ccriStatus === 'Red' ? 'red' : 'green'}`}></div>
-                        <h3>{data.ccriStatus === 'Red' ? 'CCRI Red' : 'CCRI Status'}</h3>
-                      </div>
-                    );
-                  })}
+            <div className='flags-table'>      
+              <div className={`circle ${prediction.CCRI_Red_4_Months? 'red' : 'green'}`}></div>
+              <h3>{prediction.CCRI_Red_4_Months ? 'CCRI Red 4-Mth' : 'CCRI Status OK'}</h3>
             </div>
         </div> 
       </div>
-      <div className="borr-overview" >
-          <h3 className='header-overview-borr'>Borrower Overview</h3>
-          <div className='overview-label'>{client.Borr_Overview}</div>
+      <div className='top-form'>
+        <div className="borr-overview" >
+            <h3 className='header-overview-borr'>Borrower Overview</h3>
+            <div className='overview-label'>{client.Borr_Overview}</div>
+        </div>
+        <div className='flags ews'>
+          <h3 className='header-overview-borr ews'>EWS System</h3>
+        </div> 
       </div>
     </div>
   );
