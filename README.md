@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# FinancialBERT Sentiment Analysis
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+FinancialBERT is a BERT-based model fine-tuned on financial texts for various NLP tasks, including sentiment analysis. This README explains how the model processes input text and assigns sentiment labels.
 
-## Available Scripts
+# Understanding the model
 
-In the project directory, you can run:
+## Tokenization
 
-### `npm start`
+The input text is tokenized into subword tokens using a tokenizer compatible with BERT. Each token is then mapped to its corresponding token ID from the vocabulary.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Embedding
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The token IDs are converted into dense vectors (embeddings) using the embedding layer of the model. Positional embeddings are also added to incorporate the order of tokens.
 
-### `npm test`
+## Contextual Encoding
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The token embeddings are passed through multiple layers of the Transformer encoder. These layers capture contextual relationships between tokens, resulting in a sequence of contextualized embeddings.
 
-### `npm run build`
+## Classification Head
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+For sentiment analysis, a classification head (a fully connected neural network layer) is added to the BERT model. This head takes the [CLS] token's embedding from the final layer of the BERT model, which is considered to represent the entire input sequence.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Logits Calculation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The classification head transforms the [CLS] token embedding into logits, raw scores for each sentiment class. If there are three sentiment classes (negative, neutral, positive), there will be three logits. For example, [1.2, 2.3, 4.5] where [negative, neutral, positive]
 
-### `npm run eject`
+## Softmax Function
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The logits are passed through a softmax function, which converts them into probabilities. The softmax function ensures that the probabilities sum up to 1. The formula for the softmax function for a given logit \( z_i \) is:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+\[
+P(y = i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}
+\]
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+where \( P(y = i) \) is the probability of the sentiment class \( i \).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+For example, [1.2, 2.3, 4.5] became [3.32,9.97,90.02].
 
-## Learn More
+## Probability Assignment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The output of the softmax function is a probability distribution over the sentiment classes. Each class has an associated probability that indicates the model's confidence in that class being the correct sentiment.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Prediction
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The class with the highest probability is selected as the predicted sentiment label.
