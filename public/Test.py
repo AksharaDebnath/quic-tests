@@ -1,5 +1,3 @@
-301850
-
 import pandas as pd
 import numpy as np
 
@@ -24,16 +22,19 @@ def fill_missing_months(group):
                                freq='MS')  # 'MS' is month start frequency
     
     # Create a DataFrame with all months in between
-    all_months_df = pd.DataFrame(all_months, columns=['snap_dt'])
+    all_months_df = pd.DataFrame(all_months, columns=['fill_month'])
     
     # Merge with the original group to fill in missing months
-    merged_df = pd.merge(all_months_df, group, on='snap_dt', how='left')
+    merged_df = pd.merge(all_months_df, group, how='left', left_on='fill_month', right_on='snap_dt')
     
     # Forward fill the missing data for months that were not asked
     merged_df.fillna(method='ffill', inplace=True)
     
-    # Add the month name to a new column
-    merged_df['month_name'] = merged_df['snap_dt'].dt.strftime('%B')
+    # Add the month name and year to a new column
+    merged_df['month_name'] = merged_df['fill_month'].dt.strftime('%B %Y')
+    
+    # Drop the fill_month column to keep only the original snap_dt
+    merged_df.drop(columns=['fill_month'], inplace=True)
     
     return merged_df
 
