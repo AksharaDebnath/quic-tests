@@ -1,0 +1,40 @@
+WITH RECURSIVE date_expansion AS (
+    -- Anchor query: Select the latest snap date for each client and normalize to the first of the month
+    SELECT 
+        clnt_no, 
+        snap_dt AS original_snap_dt,
+        DATE_TRUNC('month', snap_dt) AS current_date,
+        NULL::DATE AS next_snap_dt
+    FROM 
+        client_data
+    WHERE snap_dt = (SELECT MAX(snap_dt) FROM client_data c2 WHERE c2.clnt_no = client_data.clnt_no)
+    
+    UNION ALL
+    
+    -- Recursive part: Generate rows for each month between snap dates
+    SELECT 
+        de.clnt_no, 
+        de.original_snap_dt, 
+        de.current_date + INTERVAL '1 month',
+        (SELECT 
+            DATE_TRUNC('month', MIN(c2.snap_dt)) 
+         FROM 
+            client_data c2 
+         WHERE 
+            c2.clnt_no = de.clnt_no 
+            AND c2.snap_dt > de.original_snap_dt) AS next_snap_dt
+    FROM 
+        date_expansion de
+    WHERE 
+        de.current_date < COALESCE(de.next_snap_dt, CURRENT_DATE - INTERVAL '1 month')
+)
+
+-- Final select to output the expanded rows
+SELECT 
+    clnt_no, 
+    TO_CHAR(current_date, 'Month YYYY') AS repeat_month,  -- Format the month and year
+    original_snap_dt AS snap_dt
+FROM 
+    date_expansion
+ORDER BY 
+    clnt_no, current_date DESC;
